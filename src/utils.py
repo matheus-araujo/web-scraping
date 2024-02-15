@@ -51,7 +51,6 @@ def save_in_db():
     config = configparser.ConfigParser()
     config.read('database.ini')
     db_params = config['postgresql']
-
     db_url = f"postgresql://{db_params['user']}:{db_params['password']}@{db_params['host']}:{db_params['port']}/{db_params['database']}"
     engine = create_engine(db_url, echo=True)
     return transform_data().to_sql('astronomia', engine, if_exists='replace', index=False)
