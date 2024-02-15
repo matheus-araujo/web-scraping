@@ -47,6 +47,17 @@ def transform_data():
     filepath.parent.mkdir(parents=True, exist_ok=True)  
     return df.to_parquet(filepath, index=False)
 
+config = configparser.ConfigParser()
+config.read('database.ini')
+db_params = config['postgresql']
+
+db_url = f"postgresql://{db_params['user']}:{db_params['password']}@{db_params['host']}:{db_params['port']}/{db_params['database']}"
+engine = create_engine(db_url, echo=True)
+
+def save_in_db():
+    return transform_data().to_sql('astronomia', engine, if_exists='replace', index=False)
+
+
 
 
 
